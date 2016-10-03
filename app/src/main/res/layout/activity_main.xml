@@ -21,6 +21,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:text="Periodic Strategy:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewPer"
+        android:layout_above="@+id/toggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:textColor="@android:color/black" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,20 +53,10 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="Periodic Strategy:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/toggleButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        tools:textColor="@android:color/black" />
-
-    <TextView
         android:text="Distance Strategy:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/textViewDist"
         tools:textColor="@android:color/black"
         android:layout_below="@+id/toggleButton"
         android:layout_alignParentLeft="true"
@@ -70,15 +70,24 @@
         android:ems="10"
         android:id="@+id/editTextDist"
         android:hint="Meters between fix"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/textViewDist"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/toggleButtonDist"
+        android:layout_alignTop="@+id/editTextDist"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="Max Speed Strategy:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3"
+        android:id="@+id/textViewSpeed"
         tools:textColor="@android:color/black"
         android:layout_marginTop="19dp"
         android:layout_below="@+id/editTextDist" />
@@ -90,7 +99,7 @@
         android:ems="10"
         android:id="@+id/editTextSpeed1"
         android:hint="Meters between fix"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/textViewSpeed"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -114,12 +123,46 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editTextMove1"
+        android:hint="Maximum speed in m/s"
+        android:layout_above="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="43dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editTextMove2"
+        android:hint="Meters between fix"
+        android:layout_above="@+id/editTextMove1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Movement aware Strategy:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5"
+        tools:textColor="@android:color/black"
+        android:layout_above="@+id/editTextMove2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <ToggleButton
         android:text="ToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/toggleButtonDist"
-        android:layout_alignTop="@+id/editTextDist"
+        android:id="@+id/toggleButtonMove"
+        android:layout_alignTop="@+id/editTextMove2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

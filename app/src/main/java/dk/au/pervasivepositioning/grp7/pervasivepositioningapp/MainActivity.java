@@ -3,11 +3,16 @@ package dk.au.pervasivepositioning.grp7.pervasivepositioningapp;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -21,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etGetMTF = null;
     private EditText etGetS1 = null;
     private EditText etGetS2 = null;
+    private EditText etGetM1 = null;
+    private EditText etGetM2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +154,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             LocationManager.GPS_PROVIDER, (et1/et2)*1000, 0, locationListener);
                 } else {
                     locMan.removeUpdates(locationListener);
+                }
+            }
+        });
+
+        etGetM1 = (EditText) findViewById(R.id.editTextMove1);
+        etGetM2 = (EditText) findViewById(R.id.editTextMove2);
+        ToggleButton toggleMove = (ToggleButton) findViewById(R.id.toggleButtonMove);
+
+        toggleMove.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            SensorManager senMan = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            Sensor accelerometer = senMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+            LocationListener locationListener;
+
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    senMan.registerListener(new SensorEventListener() {
+                        @Override
+                        public void onSensorChanged(SensorEvent event) {
+                            Log.d("YOLO", "*** Small Steps ***");
+                        }
+
+                        @Override
+                        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+                        }
+                    }, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+                } else {
+
                 }
             }
         });

@@ -4,15 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         metersBetweenFix = Integer.parseInt(etText);
                     }
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), metersBetweenFix);
+                    locationListener = new GPSDistanceLocationListener(getParent(), metersBetweenFix,"gps1");
 
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -132,13 +129,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     int et2;
-                    if (et1Text.matches("")) {
+                    if (et2Text.matches("")) {
                         et2 = 2;
                     } else {
                         et2 = Integer.parseInt(et2Text);
                     }
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), et1);
+                    locationListener = new GPSDistanceLocationListener(getParent(), et1,"gps2");
 
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -171,17 +168,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    senMan.registerListener(new SensorEventListener() {
-                        @Override
-                        public void onSensorChanged(SensorEvent event) {
-                            Log.d("YOLO", "*** Small Steps ***");
-                        }
+                    String et1Text = etGetM1.getText().toString();
+                    String et2Text = etGetM2.getText().toString();
 
-                        @Override
-                        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                    int et1;
+                    if(et1Text.matches("")) {
+                        et1 = 10;
+                    } else {
+                        et1 = Integer.parseInt(et1Text);
+                    }
 
-                        }
-                    }, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+                    int et2;
+                    if(et2Text.matches("")) {
+                        et2 = 2;
+                    } else {
+                        et2 = Integer.parseInt(et2Text);
+                    }
+
+                    locationListener = new GPSDistanceLocationListener(getParent(), et1, "gps3");
+
+                    senMan.registerListener(new AccelerometerSensorListener(locMan, locationListener, getApplicationContext()), accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
                 } else {
 
                 }

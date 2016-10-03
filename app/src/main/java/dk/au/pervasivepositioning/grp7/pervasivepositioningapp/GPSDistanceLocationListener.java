@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,10 +19,12 @@ public class GPSDistanceLocationListener implements LocationListener {
     private Activity activity;
     private int distance;
     private Location previousLocation;
+    private String fileName;
 
-    public GPSDistanceLocationListener(Activity activity, int distance) {
+    public GPSDistanceLocationListener(Activity activity, int distance, String fileName) {
         this.activity = activity;
         this.distance = distance;
+        this.fileName = fileName;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class GPSDistanceLocationListener implements LocationListener {
                 File sdCard = Environment.getExternalStorageDirectory();
                 File dir = new File( sdCard.getAbsolutePath(), "PervPos");
                 dir.mkdirs();
-                File file = new File(dir, "gps2-distance.txt");
+                File file = new File(dir, fileName + ".txt");
                 FileWriter writer = null;
                 writer = new FileWriter(file, true);
                 writer.append(format.format(new Date()) + " ");        //hh:mm:ss

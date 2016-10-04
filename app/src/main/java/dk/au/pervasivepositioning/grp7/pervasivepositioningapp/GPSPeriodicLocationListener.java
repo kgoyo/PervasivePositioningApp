@@ -34,7 +34,7 @@ public class GPSPeriodicLocationListener implements LocationListener {
             File sdCard = Environment.getExternalStorageDirectory();
             File dir = new File( sdCard.getAbsolutePath(), "PervPos");
             dir.mkdirs();
-            File file = new File(dir, "gps1-periodic.txt");
+            File file = new File(dir, "gps1.txt");
             FileWriter writer = null;
             writer = new FileWriter(file, true);
             writer.append(format.format(new Date()) + " ");        //hh:mm:ss

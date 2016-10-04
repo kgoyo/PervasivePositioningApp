@@ -22,15 +22,23 @@ import java.io.IOException;
 
 public class AccelerometerSensorListener implements SensorEventListener {
 
-    private static final int THRESHOLD = 2;
+    private static final int THRESHOLD = 13;
+    private static final int TIME2STANDINMILLIS = 700;
     private LocationManager manager;
     private LocationListener listener;
     private Context context;
+    private int goalTime;
+    private long last;
+    private long time;
 
-    public AccelerometerSensorListener(LocationManager locMan, LocationListener locationListener, Context context) {
+
+    public AccelerometerSensorListener(LocationManager locMan, LocationListener locationListener, Context context, int goalTime) {
         this.manager = locMan;
         this.listener = locationListener;
         this.context = context;
+        this.goalTime = goalTime;
+        last = 0;
+        time = 0;
     }
 
     @Override
@@ -49,7 +57,22 @@ public class AccelerometerSensorListener implements SensorEventListener {
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
+
+            long current = System.currentTimeMillis();
+            long diff = current - last;
+            if ( diff < TIME2STANDINMILLIS ){
+                time += diff;
+
+            }
+            Log.d("Test Walk Threshold", "Step: " + time);
+
+            if (time >= goalTime) {
+                time = time % goalTime;
+                Log.d("Test Walk Threshold", "GPS Recorded");
+                manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
+            }
+
+            last = current;
         }
     }
 

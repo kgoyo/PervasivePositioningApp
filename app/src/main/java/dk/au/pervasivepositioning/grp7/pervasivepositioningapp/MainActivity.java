@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +16,13 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ToggleButton;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -163,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             SensorManager senMan = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             Sensor accelerometer = senMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
             LocationListener locationListener;
+            AccelerometerSensorListener accListener;
 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -185,11 +193,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         et2 = Integer.parseInt(et2Text);
                     }
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), et1, "gps3");
+                    int goalTime = (et1/et2)*1000;
 
-                    senMan.registerListener(new AccelerometerSensorListener(locMan, locationListener, getApplicationContext()), accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+                    locationListener = new GPSDistanceLocationListener(getParent(), goalTime, "gps3");
+                    accListener = new AccelerometerSensorListener(locMan, locationListener, getApplicationContext(), goalTime);
+
+                    senMan.registerListener(accListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
                 } else {
-
+                    senMan.unregisterListener(accListener);
                 }
             }
         });
@@ -198,35 +209,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-/*        LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-
-        LocationListener locationListener = new GPSPeriodicLocationListener(this);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        try {
+            DateFormat format = new SimpleDateFormat("HH:mm:ss");
+            File sdCard = Environment.getExternalStorageDirectory();
+            File dir = new File( sdCard.getAbsolutePath(), "PervPos");
+            dir.mkdirs();
+            File file = new File(dir, "timestamps.txt");
+            FileWriter writer = null;
+            writer = new FileWriter(file, true);
+            writer.append(format.format(new Date()) + " ");        //hh:mm:ss
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        String etText = etGetTTF.getText().toString();
-        int timeBetweenFix;
-        if (etText.matches("")) {
-            timeBetweenFix = 5000;
-        } else {
-            timeBetweenFix = Integer.parseInt( etText ) * 1000;
-        }
-        float minDist = 0;
-
-        locMan.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, timeBetweenFix, minDist, locationListener);
-
-*/
-
     }
 }

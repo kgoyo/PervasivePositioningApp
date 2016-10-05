@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnGetLocation = (Button) findViewById(R.id.button1);
         btnGetLocation.setOnClickListener(this);
 
+
+        // **** PERIODIC ****
         etGetTTF = (EditText) findViewById(R.id.editText);
         ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String etText = etGetTTF.getText().toString();
                     int timeBetweenFix;
                     if (etText.matches("")) {
-                        timeBetweenFix = 5000;
+                        timeBetweenFix = 1000;
                     } else {
                         timeBetweenFix = Integer.parseInt(etText) * 1000;
                     }
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // **** DISTANCE ****
+
         etGetMTF = (EditText) findViewById(R.id.editTextDist);
         ToggleButton toggleDist = (ToggleButton) findViewById(R.id.toggleButtonDist);
 
@@ -90,12 +94,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String etText = etGetMTF.getText().toString();
                     int metersBetweenFix;
                     if (etText.matches("")) {
-                        metersBetweenFix = 10;
+                        metersBetweenFix = 50;
                     } else {
                         metersBetweenFix = Integer.parseInt(etText);
                     }
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), metersBetweenFix,"gps1");
+                    locationListener = new GPSDistanceLocationListener(getParent(), metersBetweenFix,"gps2");
 
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -115,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // **** SPEED ****
 
         etGetS1 = (EditText) findViewById(R.id.editTextSpeed1);
         etGetS2 = (EditText) findViewById(R.id.editTextSpeed2);
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     int et1;
                     if (et1Text.matches("")) {
-                        et1 = 10;
+                        et1 = 50;
                     } else {
                         et1 = Integer.parseInt(et1Text);
                     }
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         et2 = Integer.parseInt(et2Text);
                     }
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), et1,"gps2");
+                    locationListener = new GPSDistanceLocationListener(getParent(), et1,"gps3");
 
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -163,6 +168,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // **** MOVEMENT ****
+
         etGetM1 = (EditText) findViewById(R.id.editTextMove1);
         etGetM2 = (EditText) findViewById(R.id.editTextMove2);
         ToggleButton toggleMove = (ToggleButton) findViewById(R.id.toggleButtonMove);
@@ -181,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     int et1;
                     if(et1Text.matches("")) {
-                        et1 = 10;
+                        et1 = 50;
                     } else {
                         et1 = Integer.parseInt(et1Text);
                     }
@@ -195,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     int goalTime = (et1/et2)*1000;
 
-                    locationListener = new GPSDistanceLocationListener(getParent(), goalTime, "gps3");
+                    locationListener = new GPSMovementLocationListener(getParent(), goalTime, "gps4");
                     accListener = new AccelerometerSensorListener(locMan, locationListener, getApplicationContext(), goalTime);
 
                     senMan.registerListener(accListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -217,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             File file = new File(dir, "timestamps.txt");
             FileWriter writer = null;
             writer = new FileWriter(file, true);
-            writer.append(format.format(new Date()) + " ");        //hh:mm:ss
+            writer.append(format.format(new Date()) + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -22,7 +22,7 @@ import java.io.IOException;
 
 public class AccelerometerSensorListener implements SensorEventListener {
 
-    private static final int THRESHOLD = 13;
+    private static final int THRESHOLD = 10;
     private static final int TIME2STANDINMILLIS = 700;
     private LocationManager manager;
     private LocationListener listener;
@@ -64,11 +64,11 @@ public class AccelerometerSensorListener implements SensorEventListener {
                 time += diff;
 
             }
-            Log.d("Test Walk Threshold", "Step: " + time);
+            Log.d("TestMoveSM", "Step: " + time);
 
             if (time >= goalTime) {
                 time = time % goalTime;
-                Log.d("Test Walk Threshold", "GPS Recorded");
+                Log.d("TestMoveSM", "GPS should be recorded");
                 manager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null);
             }
 

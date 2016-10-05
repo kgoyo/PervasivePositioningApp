@@ -14,14 +14,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GPSDistanceLocationListener implements LocationListener {
+/**
+ * Created by amao on 10/5/16.
+ */
+
+public class GPSMovementLocationListener implements LocationListener {
 
     private Activity activity;
     private int distance;
     private Location previousLocation;
     private String fileName;
 
-    public GPSDistanceLocationListener(Activity activity, int distance, String fileName) {
+    public GPSMovementLocationListener(Activity activity, int distance, String fileName) {
         this.activity = activity;
         this.distance = distance;
         this.fileName = fileName;
@@ -30,9 +34,8 @@ public class GPSDistanceLocationListener implements LocationListener {
     @Override
     public void onLocationChanged(Location loc) {
         try {
-            if (previousLocation == null || loc.distanceTo(previousLocation) >= distance) {
-                previousLocation = loc;
 
+                Log.d("TestMoveLM", "wrote to file");
                 DateFormat format = new SimpleDateFormat("HH:mm:ss");
                 File sdCard = Environment.getExternalStorageDirectory();
                 File dir = new File( sdCard.getAbsolutePath(), "PervPos");
@@ -44,8 +47,6 @@ public class GPSDistanceLocationListener implements LocationListener {
                 writer.append(loc.getLatitude() + " ");
                 writer.append(loc.getLongitude() + "\n");
                 writer.close();
-            } else {
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
